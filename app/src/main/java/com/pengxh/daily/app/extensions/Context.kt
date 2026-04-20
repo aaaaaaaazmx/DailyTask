@@ -141,7 +141,8 @@ fun Context.openApplication() {
 @SuppressLint("UseKtx")
 private fun Context.tryOpenDingTalkAttendance(): Boolean {
     return try {
-        val uri = Uri.parse("dingtalk://dingtalkclient/page/link?url=https://attend.dingtalk.com/attend/index.html")
+//        val uri = Uri.parse("dingtalk://dingtalkclient/page/link?url=https://attend.dingtalk.com/attend/index.html")
+        val uri = Uri.parse("dingtalk://dingtalkclient/page/link?url=https://attend.dingtalk.com/attend/index.html&corpId=dinge31a458f3b4858b5a1320dcb25e91351")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
