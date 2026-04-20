@@ -185,7 +185,7 @@ class NotificationMonitorService : NotificationListenerService() {
                 }
 
                 else -> {
-                    val key = SaveKeyValues.getValue(Constant.TASK_COMMAND_KEY, "打卡") as String
+                    val key = SaveKeyValues.getValue(Constant.TASK_COMMAND_KEY, "几点了") as String
                     if (notice.contains(key)) {
                         openApplication(true)
                     }

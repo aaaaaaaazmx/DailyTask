@@ -64,7 +64,7 @@ class TaskConfigActivity : KotlinBaseActivity<ActivityTaskConfigBinding>() {
         ) as Int
         binding.timeoutTextView.text = "${time}s"
         binding.keyTextView.text =
-            SaveKeyValues.getValue(Constant.TASK_COMMAND_KEY, "打卡") as String
+            SaveKeyValues.getValue(Constant.TASK_COMMAND_KEY, "几点了") as String
         binding.autoTaskSwitch.isChecked = SaveKeyValues.getValue(
             Constant.TASK_AUTO_START_KEY, true
         ) as Boolean
@@ -198,7 +198,7 @@ class TaskConfigActivity : KotlinBaseActivity<ActivityTaskConfigBinding>() {
             ) as Int
             exportData.overTime = time
 
-            val command = SaveKeyValues.getValue(Constant.TASK_COMMAND_KEY, "打卡") as String
+            val command = SaveKeyValues.getValue(Constant.TASK_COMMAND_KEY, "几点了") as String
             exportData.command = command
 
             exportData.isAutoStart = SaveKeyValues.getValue(
