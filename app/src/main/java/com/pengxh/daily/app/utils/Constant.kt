@@ -25,6 +25,7 @@ object Constant {
     const val CHANNEL_TYPE_KEY = "CHANNEL_TYPE_KEY"
     const val RESULT_SOURCE_KEY = "RESULT_SOURCE_KEY"
     const val DIRECT_ATTENDANCE_KEY = "DIRECT_ATTENDANCE_KEY"
+    const val PRIVACY_ON_LAUNCH_KEY = "PRIVACY_ON_LAUNCH_KEY"
 
     // ============================================================
     // 目标应用

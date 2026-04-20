@@ -12,6 +12,7 @@ import android.provider.Settings
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -35,7 +36,6 @@ import com.pengxh.daily.app.sqlite.DatabaseWrapper
 import com.pengxh.daily.app.sqlite.bean.DailyTaskBean
 import com.pengxh.daily.app.utils.ApplicationEvent
 import com.pengxh.daily.app.utils.Constant
-import com.pengxh.daily.app.utils.DailyTask
 import com.pengxh.daily.app.utils.GestureController
 import com.pengxh.daily.app.utils.LogFileManager
 import com.pengxh.daily.app.utils.MaskViewController
@@ -43,7 +43,6 @@ import com.pengxh.daily.app.utils.MessageDispatcher
 import com.pengxh.daily.app.utils.TaskDataManager
 import com.pengxh.daily.app.utils.TaskScheduler
 import com.pengxh.daily.app.utils.TimeoutTimerManager
-import com.pengxh.daily.app.utils.WatermarkDrawable
 import com.pengxh.daily.app.vm.MessageViewModel
 import com.pengxh.kt.lite.base.KotlinBaseActivity
 import com.pengxh.kt.lite.divider.RecyclerViewItemOffsets
@@ -148,13 +147,7 @@ class MainActivity : KotlinBaseActivity<ActivityMainBinding>(), TaskScheduler.Ta
                 }
 
                 R.id.menu_settings -> {
-                    MaterialAlertDialogBuilder(this)
-                        .setTitle("使用须知")
-                        .setMessage("本软件完全免费！仅供内部使用！严禁商用或者用作其他非法用途！\r\n近期发现有人在咸鱼私自倒卖本软件，请勿购买！如有购买，请联系卖家退款！")
-                        .setCancelable(false) // 禁止点击外部关闭
-                        .setPositiveButton("知道了") { _, _ ->
-                            navigatePageTo<SettingsActivity>()
-                        }.show()
+                    navigatePageTo<SettingsActivity>()
                 }
             }
             true
@@ -163,6 +156,12 @@ class MainActivity : KotlinBaseActivity<ActivityMainBinding>(), TaskScheduler.Ta
 
     override fun initOnCreate(savedInstanceState: Bundle?) {
         EventBus.getDefault().register(this)
+
+        // 隐私：禁止截屏与录屏（防止任务栏/Recents 缩略图泄露内容）
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
 
         // 显示悬浮窗
         if (Settings.canDrawOverlays(this)) {
@@ -185,9 +184,6 @@ class MainActivity : KotlinBaseActivity<ActivityMainBinding>(), TaskScheduler.Ta
         Intent(this, CountDownTimerService::class.java).apply {
             bindService(this, serviceConnection, BIND_AUTO_CREATE)
         }
-
-        val watermark = DailyTask.getWatermarkText()
-        binding.contentView.background = WatermarkDrawable(this, watermark)
 
         // 数据
         taskBeans = DatabaseWrapper.loadAllTask()
@@ -219,6 +215,17 @@ class MainActivity : KotlinBaseActivity<ActivityMainBinding>(), TaskScheduler.Ta
         gestureController = GestureController(this, maskViewController, mainHandler)
         taskScheduler = TaskScheduler(mainHandler, taskBeans, this)
         timeoutTimerManager = TimeoutTimerManager(mainHandler)
+
+        // 启动即隐私模式：进入主界面立即显示遮罩，等首帧布局后再触发
+        val privacyOnLaunch =
+            SaveKeyValues.getValue(Constant.PRIVACY_ON_LAUNCH_KEY, false) as Boolean
+        if (privacyOnLaunch) {
+            mainHandler.post {
+                if (!maskViewController.isMaskVisible()) {
+                    maskViewController.showMaskView(mainHandler)
+                }
+            }
+        }
     }
 
     @Suppress("unused")

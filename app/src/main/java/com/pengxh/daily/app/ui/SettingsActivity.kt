@@ -24,10 +24,8 @@ import com.pengxh.daily.app.service.FloatingWindowService
 import com.pengxh.daily.app.service.NotificationMonitorService
 import com.pengxh.daily.app.utils.ApplicationEvent
 import com.pengxh.daily.app.utils.Constant
-import com.pengxh.daily.app.utils.DailyTask
 import com.pengxh.daily.app.utils.EmailManager
 import com.pengxh.daily.app.utils.ProjectionSession
-import com.pengxh.daily.app.utils.WatermarkDrawable
 import com.pengxh.daily.app.vm.MessageViewModel
 import com.pengxh.kt.lite.base.KotlinBaseActivity
 import com.pengxh.kt.lite.extensions.convertColor
@@ -95,9 +93,6 @@ class SettingsActivity : KotlinBaseActivity<ActivitySettingsBinding>() {
         if (notificationEnable()) {
             turnOnNotificationMonitorService()
         }
-
-        val watermark = DailyTask.getWatermarkText()
-        binding.contentView.background = WatermarkDrawable(this, watermark)
     }
 
     @Suppress("unused")
@@ -312,6 +307,10 @@ class SettingsActivity : KotlinBaseActivity<ActivitySettingsBinding>() {
             SaveKeyValues.putValue(Constant.BACK_TO_HOME_KEY, isChecked)
         }
 
+        binding.privacyOnLaunchSwitch.setOnCheckedChangeListener { _, isChecked ->
+            SaveKeyValues.putValue(Constant.PRIVACY_ON_LAUNCH_KEY, isChecked)
+        }
+
         binding.introduceLayout.setOnClickListener {
             navigatePageTo<QuestionAndAnswerActivity>()
         }
@@ -395,6 +394,8 @@ class SettingsActivity : KotlinBaseActivity<ActivitySettingsBinding>() {
             SaveKeyValues.getValue(Constant.GESTURE_DETECTOR_KEY, true) as Boolean
         binding.backToHomeSwitch.isChecked =
             SaveKeyValues.getValue(Constant.BACK_TO_HOME_KEY, true) as Boolean
+        binding.privacyOnLaunchSwitch.isChecked =
+            SaveKeyValues.getValue(Constant.PRIVACY_ON_LAUNCH_KEY, false) as Boolean
 
         if (notificationEnable()) {
             binding.noticeTipsView.text = "服务状态查询中，请稍后..."
