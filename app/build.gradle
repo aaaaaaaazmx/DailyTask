@@ -15,16 +15,6 @@ android {
         targetSdk 36
         versionCode 2310
         versionName '2.3.1.0'
-        ndkVersion '21.4.7075529'
-
-        ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
-        }
-        externalNativeBuild {
-            cmake {
-                cppFlags "-std=c++14"
-            }
-        }
     }
 
     flavorDimensions += 'versionCode'
@@ -61,13 +51,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    externalNativeBuild {
-        cmake {
-            path "src/main/cpp/CMakeLists.txt"
-            version "3.22.1"
-        }
     }
 
     kotlinOptions {
