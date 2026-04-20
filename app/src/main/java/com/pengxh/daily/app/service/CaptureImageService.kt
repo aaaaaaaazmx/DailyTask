@@ -49,7 +49,7 @@ class CaptureImageService : Service(), CoroutineScope by MainScope() {
     private val notificationManager by lazy { getSystemService(NotificationManager::class.java) }
     private val notificationBuilder by lazy {
         NotificationCompat.Builder(this, "capture_image_service_channel").apply {
-            setSmallIcon(R.mipmap.ic_launcher)
+            setSmallIcon(R.drawable.main_icon)
             setContentText("截屏服务已就绪")
             setPriority(NotificationCompat.PRIORITY_LOW)
             setOngoing(true)

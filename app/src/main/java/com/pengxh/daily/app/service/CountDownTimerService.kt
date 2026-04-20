@@ -25,7 +25,7 @@ class CountDownTimerService : Service() {
     private val notificationManager by lazy { getSystemService(NOTIFICATION_SERVICE) as NotificationManager }
     private val notificationBuilder by lazy {
         NotificationCompat.Builder(this, "countdown_timer_service_channel").apply {
-            setSmallIcon(R.mipmap.ic_launcher)
+            setSmallIcon(R.drawable.main_icon)
             setContentText("倒计时服务已就绪")
             setPriority(NotificationCompat.PRIORITY_LOW)
             setOngoing(true)

@@ -18,7 +18,7 @@
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
             android:padding="@dimen/dp_4"
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@drawable/main_icon" />
 
         <View
             android:layout_width="@dimen/dividerLine"
