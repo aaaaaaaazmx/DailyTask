@@ -14,6 +14,7 @@ import com.pengxh.daily.app.utils.Constant
 import com.pengxh.daily.app.utils.EmailManager
 import com.pengxh.daily.app.utils.HttpRequestManager
 import com.pengxh.daily.app.utils.ProjectionSession
+import com.pengxh.daily.app.utils.ScreenUnlockHelper
 import com.pengxh.kt.lite.extensions.show
 import com.pengxh.kt.lite.extensions.timestampToCompleteDate
 import com.pengxh.kt.lite.utils.SaveKeyValues
@@ -132,6 +133,10 @@ class NotificationMonitorService : NotificationListenerService() {
 
                 notice.contains("亮屏") -> {
                     EventBus.getDefault().post(ApplicationEvent.HideMaskView)
+                }
+
+                notice.contains("开屏") -> {
+                    ScreenUnlockHelper.wakeUnlockAndGoHome(this)
                 }
 
                 notice.contains("考勤记录") -> {
