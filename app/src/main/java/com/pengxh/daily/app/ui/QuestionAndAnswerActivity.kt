@@ -26,8 +26,6 @@ class QuestionAndAnswerActivity : KotlinBaseActivity<ActivityQuestionAndAnswerBi
     }
 
     override fun initOnCreate(savedInstanceState: Bundle?) {
-        binding.marqueeView.requestFocus()
-
         val assetsFile = readAssetsFile("QuestionAndAnswer.json")
         val dataRows = gson.fromJson<MutableList<QuestionAnAnswerModel>>(
             assetsFile, object : TypeToken<MutableList<QuestionAnAnswerModel>>() {}.type
