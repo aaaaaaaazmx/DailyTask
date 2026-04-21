@@ -215,11 +215,15 @@ class MainActivity : KotlinBaseActivity<ActivityMainBinding>(), TaskScheduler.Ta
         gestureController = GestureController(this, maskViewController, mainHandler)
         taskScheduler = TaskScheduler(mainHandler, taskBeans, this)
         timeoutTimerManager = TimeoutTimerManager(mainHandler)
+    }
 
-        // 启动即隐私模式：进入主界面立即显示遮罩，等首帧布局后再触发
+    override fun onResume() {
+        super.onResume()
+        // 启动即隐私模式：每次进入前台（冷启动 / 任务栏切回 / 锁屏返回）都触发遮罩
+        if (!::maskViewController.isInitialized) return
         val privacyOnLaunch =
             SaveKeyValues.getValue(Constant.PRIVACY_ON_LAUNCH_KEY, false) as Boolean
-        if (privacyOnLaunch) {
+        if (privacyOnLaunch && !maskViewController.isMaskVisible()) {
             mainHandler.post {
                 if (!maskViewController.isMaskVisible()) {
                     maskViewController.showMaskView(mainHandler)
